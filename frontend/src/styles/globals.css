@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#F8FAFC] text-[#0F172A] font-sans antialiased;
+  }
+}
+
+/* ==========================================================================
+   ESTILOS DEDICADOS PARA IMPRESIÓN TÉRMICA 100% VÍA NAVEGADOR (80mm / 58mm)
+   Altus PetCloud - Point of Sale Thermal Print
+   ========================================================================== */
+@media print {
+  /* Ocultar cualquier elemento fuera del contenedor del ticket térmico */
+  body * {
+    visibility: hidden;
+  }
+
+  #thermal-pos-ticket,
+  #thermal-pos-ticket * {
+    visibility: visible;
+  }
+
+  #thermal-pos-ticket {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 78mm; /* Estándar papel térmico 80mm con márgenes seguros */
+    padding: 2mm 3mm;
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 11px;
+    line-height: 1.25;
+    color: #000000 !important;
+    background-color: #ffffff !important;
+  }
+
+  @page {
+    size: 80mm auto; /* Formato rollo continuo */
+    margin: 0mm;
+  }
+}
