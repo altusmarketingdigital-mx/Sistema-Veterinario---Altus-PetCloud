@@ -12,7 +12,7 @@ flowchart LR
     A["Fase 1: MVP & Fundaciones (Completada ✅)"] --> B["Fase 2: Seguridad & Multi-Tenancy (Completada ✅)"]
     B --> C["Fase 3: Módulos Clínicos Avanzados (Completada ✅)"]
     C --> D["Fase 4: POS Avanzado & Control de Caja (Completada ✅)"]
-    D --> E["Fase 5: Notificaciones, CRM & BI (Próxima 🚀)"]
+    D --> E["Fase 5: Notificaciones, CRM & BI (En Curso 🚀)"]
 ```
 
 ---
@@ -67,14 +67,14 @@ flowchart LR
 **Objetivo:** Máxima velocidad operativa en mostrador, arqueo y farmacia veterinaria.
 
 #### Sprint 5: POS Avanzado, Arqueo y Corte de Caja ✅
-- [x] Migración SQL `004_pos_advanced_and_shifts.sql` con tablas `cash_shifts`, `cash_movements` y `product_batches`.
-- [x] Vinculación de tickets de venta con sucursal y turno de cajero activo (`shift_id`).
-- [x] Backend API de turnos (`/api/shifts`): Apertura con fondo inicial, registro de entradas/salidas de efectivo y Cierre con Corte Z calculando diferencia de arqueo (sobrante o faltante).
-- [x] Componente interactivo `ShiftModal.jsx` integrado al POS con métricas en tiempo real de efectivo, tarjetas y total recaudado.
+- [x] Migración SQL [`004_pos_advanced_and_shifts.sql`](file:///d:/SISTEMA%20VETERINARIO/database/migrations/004_pos_advanced_and_shifts.sql) con tablas `cash_shifts`, `cash_movements` y `product_batches`.
+- [x] Vinculación de tickets de venta con sucursal y turno de cajero activo (`invoices.shift_id`).
+- [x] Backend API de turnos ([`shifts.routes.js`](file:///d:/SISTEMA%20VETERINARIO/backend/src/routes/shifts.routes.js)): Apertura con fondo inicial, registro de entradas/salidas de efectivo y Cierre con Corte Z calculando diferencia de arqueo (sobrante o faltante).
+- [x] Componente interactivo [`ShiftModal.jsx`](file:///d:/SISTEMA%20VETERINARIO/frontend/src/components/pos/ShiftModal.jsx) integrado al POS con métricas en tiempo real de efectivo, tarjetas y total recaudado.
 
 #### Sprint 6: Control de Lotes y Caducidades de Biológicos ✅
 - [x] Estructura relacional para trazabilidad de lotes (`batch_number`, `expiration_date`, `quantity_available`).
-- [x] Soporte para alertas tempranas de medicamentos por caducar.
+- [x] Soporte para auditoría de medicamentos y biológicos sensibles.
 
 ---
 
@@ -82,12 +82,12 @@ flowchart LR
 **Objetivo:** Retención de clientes, recordatorios automáticos y reportes financieros.
 
 #### Sprint 7: CRM & Recordatorios Automáticos
-- [ ] Enlace de recordatorios de citas y refuerzos de vacunas por WhatsApp API.
-- [ ] Portal web del tutor para consulta de cartilla de vacunación digital.
+- [ ] Módulo de recordatorios de citas veterinarias y refuerzos de vacunas mediante WhatsApp API (integración con webhooks).
+- [ ] Portal web del tutor para consulta del carnet de vacunación y descarga de recetas.
 
 #### Sprint 8: Business Intelligence y Reportes Ejecutivos
-- [ ] Dashboard analítico con ingresos por médico, servicios más rentables y ticket promedio.
-- [ ] Exportaciones contables en Excel/PDF y auditorías de seguridad antes de producción.
+- [ ] Dashboard interactivo con métricas financieras (ingresos por veterinario, servicios de estética más rentables, ticket promedio).
+- [ ] Exportación de reportes contables en Excel / PDF y preparación para despliegue global.
 
 ---
 
