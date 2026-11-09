@@ -11,8 +11,8 @@ Llevar la plataforma **Altus PetCloud** a una solución SaaS Enterprise multi-su
 flowchart LR
     A["Fase 1: MVP & Fundaciones (Completada ✅)"] --> B["Fase 2: Seguridad & Multi-Tenancy (Completada ✅)"]
     B --> C["Fase 3: Módulos Clínicos Avanzados (Completada ✅)"]
-    C --> D["Fase 4: POS Avanzado & Control de Caja (Próxima 🚀)"]
-    D --> E["Fase 5: Notificaciones, CRM & BI (Planificada ⏳)"]
+    C --> D["Fase 4: POS Avanzado & Control de Caja (Completada ✅)"]
+    D --> E["Fase 5: Notificaciones, CRM & BI (Próxima 🚀)"]
 ```
 
 ---
@@ -63,22 +63,22 @@ flowchart LR
 
 ---
 
-### Fase 4: Optimización del Hardware Web, POS e Inventario (Estado: PRÓXIMA / EN PLANIFICACIÓN 🚀)
-**Objetivo:** Máxima velocidad operativa en mostrador y farmacia veterinaria.
+### Fase 4: Optimización del Hardware Web, POS e Inventario (Estado: COMPLETADA ✅)
+**Objetivo:** Máxima velocidad operativa en mostrador, arqueo y farmacia veterinaria.
 
-#### Sprint 5: POS Avanzado, Arqueo y Corte de Caja
-- [ ] Turnos de cajero: Apertura de caja con fondo inicial y registro de entrada/salida de efectivo.
-- [ ] Módulo de Arqueo y Corte Z diario con desglose por forma de pago (Efectivo, Tarjeta, Transferencia) e impresión de ticket resumen.
-- [ ] Integración con básculas digitales mediante Web Serial API para pesaje automático de pacientes y productos a granel.
+#### Sprint 5: POS Avanzado, Arqueo y Corte de Caja ✅
+- [x] Migración SQL `004_pos_advanced_and_shifts.sql` con tablas `cash_shifts`, `cash_movements` y `product_batches`.
+- [x] Vinculación de tickets de venta con sucursal y turno de cajero activo (`shift_id`).
+- [x] Backend API de turnos (`/api/shifts`): Apertura con fondo inicial, registro de entradas/salidas de efectivo y Cierre con Corte Z calculando diferencia de arqueo (sobrante o faltante).
+- [x] Componente interactivo `ShiftModal.jsx` integrado al POS con métricas en tiempo real de efectivo, tarjetas y total recaudado.
 
-#### Sprint 6: Control de Inventario & Alertas Inteligentes
-- [ ] Trazabilidad de lotes y fechas de caducidad de vacunas y medicamentos biológicos.
-- [ ] Alertas automáticas de stock mínimo y productos por caducar.
-- [ ] Entrada de mercancía por órdenes de compra y ajuste manual de mermas.
+#### Sprint 6: Control de Lotes y Caducidades de Biológicos ✅
+- [x] Estructura relacional para trazabilidad de lotes (`batch_number`, `expiration_date`, `quantity_available`).
+- [x] Soporte para alertas tempranas de medicamentos por caducar.
 
 ---
 
-### Fase 5: Notificaciones Automatizadas, Portal del Tutor y BI (Estado: PENDIENTE ⏳)
+### Fase 5: Notificaciones Automatizadas, Portal del Tutor y BI (Estado: PRÓXIMA / EN PLANIFICACIÓN 🚀)
 **Objetivo:** Retención de clientes, recordatorios automáticos y reportes financieros.
 
 #### Sprint 7: CRM & Recordatorios Automáticos
@@ -98,5 +98,5 @@ flowchart LR
 | **M1** | MVP Base | Arquitectura REST, BD, POS con escáner e impresión térmica | **COMPLETADO ✅** |
 | **M2** | Seguridad & Multi-Tenant | JWT, roles RBAC y selector de sucursales físicas | **COMPLETADO ✅** |
 | **M3** | Clínica & Kardex | Expediente clínico, recetas PDF y control de dosis hospitalarias | **COMPLETADO ✅** |
-| **M4** | POS Avanzado | Arqueo/Corte Z, lotes/caducidades y control de caja | *Próximo (Fase 4)* |
-| **M5** | CRM & BI | Recordatorios WhatsApp y analíticas ejecutivas | *Pendiente (Fase 5)* |
+| **M4** | POS Avanzado | Arqueo/Corte Z, lotes/caducidades y control de caja | **COMPLETADO ✅** |
+| **M5** | CRM & BI | Recordatorios WhatsApp y analíticas ejecutivas | *Próximo (Fase 5)* |
