@@ -1,8 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ThermalTicket from './ThermalTicket';
+import ShiftModal from './ShiftModal';
 
 export default function PosView() {
   const [barcodeInput, setBarcodeInput] = useState('');
+  const [isShiftModalOpen, setIsShiftModalOpen] = useState(false);
+  const [currentShift, setCurrentShift] = useState({
+    id: 'shift-8921-active',
+    opened_at: '08:30 AM',
+    opening_balance: '500.00',
+    cash_sales: '1,350.00',
+    card_sales: '2,450.00',
+    total_sales: '3,800.00',
+    status: 'OPEN'
+  });
   const [cart, setCart] = useState([
     { id: '1', barcode: '75010001', name: 'Alimento Pro Plan Adulto 3kg', price: 650.00, qty: 1 },
     { id: '2', barcode: '75010002', name: 'Desparasitación NexGard Spectra', price: 320.00, qty: 1 },
@@ -111,6 +122,27 @@ export default function PosView() {
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
+      {/* Modal de Control de Turno y Arqueo */}
+      <ShiftModal
+        isOpen={isShiftModalOpen}
+        onClose={() => setIsShiftModalOpen(false)}
+        currentShift={currentShift}
+        onOpenShift={(data) => {
+          setCurrentShift({
+            id: `shift-${Date.now().toString().slice(-4)}`,
+            opened_at: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            opening_balance: data.opening_balance.toFixed(2),
+            cash_sales: '0.00',
+            card_sales: '0.00',
+            total_sales: '0.00',
+            status: 'OPEN'
+          });
+        }}
+        onCloseShift={(data) => {
+          setCurrentShift(null);
+        }}
+      />
+
       {/* Componente del Ticket Térmico Oculto en pantalla, visible al imprimir */}
       <ThermalTicket invoiceData={lastInvoice} />
 
@@ -120,8 +152,21 @@ export default function PosView() {
           <h1 className="text-2xl font-bold text-[#0F172A] tracking-tight">Punto de Venta (POS) & Farmacia</h1>
           <p className="text-sm text-slate-500">Escáner de código de barras activo e impresión térmica en 80mm.</p>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800">
+        <div className="flex items-center gap-2.5">
+          {/* Botón de Control de Turno y Arqueo */}
+          <button
+            onClick={() => setIsShiftModalOpen(true)}
+            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold border transition flex items-center gap-1.5 ${
+              currentShift
+                ? 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100'
+                : 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100'
+            }`}
+          >
+            <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+            {currentShift ? 'Turno Abierto (Arqueo / Corte Z)' : 'Abrir Turno de Caja'}
+          </button>
+
+          <span className="inline-flex items-center px-3 py-1.5 rounded-xl text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
             <span className="w-2 h-2 rounded-full bg-[#10B981] mr-1.5 animate-pulse"></span>
             Escáner Conectado
           </span>

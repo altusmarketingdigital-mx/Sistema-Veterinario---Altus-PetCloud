@@ -10,8 +10,10 @@ router.use(authenticateToken);
 router.post('/checkout', requireRoles('ADMIN', 'RECEPTIONIST'), async (req, res, next) => {
   const client = await db.getClient();
   try {
-    const { client_id, items, payment_method = 'CASH', discount_amount = 0, notes } = req.body;
+    const { client_id, items, payment_method = 'CASH', discount_amount = 0, notes, shift_id } = req.body;
     const user_id = req.user.id; // Asignado automáticamente desde el token autenticado
+    const tenant_id = req.tenantId;
+    const branch_id = req.branchId;
 
     if (!items || items.length === 0) {
       return res.status(400).json({ success: false, message: 'El carrito no contiene items' });
@@ -53,16 +55,19 @@ router.post('/checkout', requireRoles('ADMIN', 'RECEPTIONIST'), async (req, res,
     const total = subtotal + tax_amount - Number(discount_amount);
     const invoiceNumber = `ALTUS-${Date.now().toString().slice(-8)}`;
 
-    // 2. Insertar cabecera de la factura/ticket
+    // 2. Insertar cabecera de la factura/ticket con sucursal y turno
     const invoiceInsertQuery = `
-      INSERT INTO invoices (invoice_number, client_id, user_id, subtotal, tax_amount, discount_amount, total, payment_method, notes)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+      INSERT INTO invoices (invoice_number, tenant_id, branch_id, shift_id, client_id, user_id, subtotal, tax_amount, discount_amount, total, payment_method, notes)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
       RETURNING *
     `;
     const invoiceRes = await client.query(invoiceInsertQuery, [
       invoiceNumber,
+      tenant_id || null,
+      branch_id || null,
+      shift_id || null,
       client_id || null,
-      user_id || '00000000-0000-0000-0000-000000000000', // Mock o ID de usuario autenticado
+      user_id,
       subtotal,
       tax_amount,
       discount_amount,
