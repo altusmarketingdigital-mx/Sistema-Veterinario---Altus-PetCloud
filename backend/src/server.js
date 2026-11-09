@@ -11,6 +11,8 @@ const branchesRoutes = require('./routes/branches.routes');
 const prescriptionsRoutes = require('./routes/prescriptions.routes');
 const kardexRoutes = require('./routes/kardex.routes');
 const shiftsRoutes = require('./routes/shifts.routes');
+const notificationsRoutes = require('./routes/notifications.routes');
+const analyticsRoutes = require('./routes/analytics.routes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -43,6 +45,8 @@ app.use('/api/patients', patientsRoutes);
 app.use('/api/prescriptions', prescriptionsRoutes);
 app.use('/api/kardex', kardexRoutes);
 app.use('/api/shifts', shiftsRoutes);
+app.use('/api/notifications', notificationsRoutes);
+app.use('/api/analytics', analyticsRoutes);
 
 // Manejo Centralizado de Errores
 app.use((err, req, res, next) => {

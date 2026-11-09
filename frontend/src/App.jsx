@@ -3,12 +3,15 @@ import DashboardView from './components/dashboard/DashboardView';
 import AppointmentsView from './components/appointments/AppointmentsView';
 import PosView from './components/pos/PosView';
 import ClinicalKardexView from './components/clinical/ClinicalKardexView';
+import AnalyticsView from './components/analytics/AnalyticsView';
+import WhatsAppModal from './components/crm/WhatsAppModal';
 import LoginModal from './components/auth/LoginModal';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 function MainAppContent() {
   const [currentView, setCurrentView] = useState('dashboard');
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isWhatsAppOpen, setIsWhatsAppOpen] = useState(false);
   const { user, hasRole, currentBranch, switchBranch } = useAuth();
 
   const branches = [
@@ -20,6 +23,7 @@ function MainAppContent() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col md:flex-row">
       <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+      <WhatsAppModal isOpen={isWhatsAppOpen} onClose={() => setIsWhatsAppOpen(false)} />
 
       {/* Sidebar de Navegación Lateral (Oculto en impresión) */}
       <aside className="w-full md:w-64 bg-[#0F172A] text-white p-5 flex flex-col justify-between print:hidden">
@@ -112,7 +116,31 @@ function MainAppContent() {
                 <span>💳</span> Punto de Venta (POS)
               </button>
             )}
+
+            {/* Módulo de BI y Analíticas Exclusivo para Admin */}
+            {hasRole('ADMIN') && (
+              <button
+                onClick={() => setCurrentView('analytics')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+                  currentView === 'analytics'
+                    ? 'bg-slate-800 text-white border-l-4 border-[#10B981]'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                }`}
+              >
+                <span>📈</span> BI & Finanzas
+              </button>
+            )}
           </nav>
+
+          {/* Botón Rápido de WhatsApp */}
+          <div className="mt-4 pt-3 border-t border-slate-800">
+            <button
+              onClick={() => setIsWhatsAppOpen(true)}
+              className="w-full flex items-center justify-center gap-2 py-2 px-3 bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-600/40 text-emerald-400 rounded-xl text-xs font-bold transition"
+            >
+              <span>💬</span> Recordatorio WhatsApp
+            </button>
+          </div>
         </div>
 
         {/* Perfil del Usuario Activo & Switch de Rol */}
@@ -139,6 +167,7 @@ function MainAppContent() {
         {currentView === 'appointments' && <AppointmentsView />}
         {currentView === 'clinical' && hasRole('ADMIN', 'VETERINARIAN') && <ClinicalKardexView />}
         {currentView === 'pos' && hasRole('ADMIN', 'RECEPTIONIST') && <PosView />}
+        {currentView === 'analytics' && hasRole('ADMIN') && <AnalyticsView />}
       </main>
     </div>
   );
