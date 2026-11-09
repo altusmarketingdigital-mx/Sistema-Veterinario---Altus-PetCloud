@@ -8,6 +8,8 @@ const posRoutes = require('./routes/pos.routes');
 const patientsRoutes = require('./routes/patients.routes');
 const authRoutes = require('./routes/auth.routes');
 const branchesRoutes = require('./routes/branches.routes');
+const prescriptionsRoutes = require('./routes/prescriptions.routes');
+const kardexRoutes = require('./routes/kardex.routes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -37,6 +39,8 @@ app.use('/api/appointments', appointmentsRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/pos', posRoutes);
 app.use('/api/patients', patientsRoutes);
+app.use('/api/prescriptions', prescriptionsRoutes);
+app.use('/api/kardex', kardexRoutes);
 
 // Manejo Centralizado de Errores
 app.use((err, req, res, next) => {

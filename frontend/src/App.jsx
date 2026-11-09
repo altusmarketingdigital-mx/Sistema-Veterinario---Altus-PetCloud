@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DashboardView from './components/dashboard/DashboardView';
 import AppointmentsView from './components/appointments/AppointmentsView';
 import PosView from './components/pos/PosView';
+import ClinicalKardexView from './components/clinical/ClinicalKardexView';
 import LoginModal from './components/auth/LoginModal';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
@@ -84,6 +85,20 @@ function MainAppContent() {
               <span>📅</span> Citas & Consultorio
             </button>
 
+            {/* Accesible por Admin y Veterinario */}
+            {hasRole('ADMIN', 'VETERINARIAN') && (
+              <button
+                onClick={() => setCurrentView('clinical')}
+                className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition ${
+                  currentView === 'clinical'
+                    ? 'bg-slate-800 text-white border-l-4 border-[#10B981]'
+                    : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
+                }`}
+              >
+                <span>🏥</span> Hospital & Recetas
+              </button>
+            )}
+
             {/* Restringido a Admin y Recepcionista */}
             {hasRole('ADMIN', 'RECEPTIONIST') && (
               <button
@@ -122,6 +137,7 @@ function MainAppContent() {
       <main className="flex-1 overflow-x-hidden">
         {currentView === 'dashboard' && <DashboardView onNavigate={(view) => setCurrentView(view)} />}
         {currentView === 'appointments' && <AppointmentsView />}
+        {currentView === 'clinical' && hasRole('ADMIN', 'VETERINARIAN') && <ClinicalKardexView />}
         {currentView === 'pos' && hasRole('ADMIN', 'RECEPTIONIST') && <PosView />}
       </main>
     </div>
