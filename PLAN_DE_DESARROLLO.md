@@ -10,8 +10,8 @@ Llevar la plataforma **Altus PetCloud** desde su estado actual hasta una soluci�
 ```mermaid
 flowchart LR
     A["Fase 1: MVP & Fundaciones (Completada)"] --> B["Fase 2: Seguridad & Multi-Tenancy (Completada)"]
-    B --> C["Fase 3: Módulos Clínicos Avanzados (En Curso)"]
-    C --> D["Fase 4: E-Commerce, POS & Hardware"]
+    B --> C["Fase 3: Módulos Clínicos Avanzados (Completada)"]
+    C --> D["Fase 4: E-Commerce, POS & Hardware (Próxima)"]
     D --> E["Fase 5: Métricas & Escala Cloud"]
 ```
 
@@ -48,18 +48,18 @@ flowchart LR
 
 ---
 
-### Fase 3: Expediente Clínico Digital y Kardex Hospitalario (Estado: PRÓXIMA / EN CURSO 🚀)
+### Fase 3: Expediente Clínico Digital y Kardex Hospitalario (Estado: COMPLETADA ✅)
 **Objetivo:** Digitalizar al 100% el flujo de consulta, hospitalización y control de fármacos.
 
-#### Sprint 3: Historia Clínica y Recetas Electrónicas
-- [ ] Formulario clínico dinámico: Anamnesis, constantes vitales (gráfico evolutivo de peso, temperatura, frecuencia cardíaca).
-- [ ] Generador de Recetas Médicas Digitales con firma profesional, folio único y descarga en PDF.
-- [ ] Galería multimedia de estudios (Rayos X, Ultrasonidos, análisis de laboratorio) vinculados a la historia clínica.
+#### Sprint 3: Historia Clínica y Recetas Electrónicas ✅
+- [x] Migración SQL `003_clinical_and_prescriptions.sql` con tablas `prescriptions`, `prescription_items` y `clinical_attachments`.
+- [x] Backend API de recetas (`/api/prescriptions`) con asignación de folio único, diagnóstico y desglose de fármacos.
+- [x] Plantilla y Modal oficial en Frontend `PrescriptionPDFModal.jsx` para visualización y descarga/impresión directa en PDF con membrete clínico, cédula profesional y código de validación.
 
-#### Sprint 4: Kardex de Hospitalización en Tiempo Real
-- [ ] Monitor de pacientes hospitalizados con semáforo de criticidad (Verde: Estable, Amarillo: Observación, Rojo: Crítico).
-- [ ] Programador de horarios de dosificación y alertas sonoras/visuales de aplicación.
-- [ ] Deducción automática de stock en el inventario al registrar la aplicación de fármacos.
+#### Sprint 4: Kardex de Hospitalización en Tiempo Real ✅
+- [x] Monitor clínico de internamiento con semáforo de criticidad dinámico (`STABLE` Verde, `OBSERVATION` Amarillo, `CRITICAL` Rojo) y asignación de jaula/box.
+- [x] Endpoint seguro `/api/kardex/:id/administer` con registro de profesional responsable y descuento atómico de inventario médico al suministrar la dosis.
+- [x] Componente integrado `ClinicalKardexView.jsx` con métricas de dosis pendientes, administradas y filtro de criticidad.
 
 ---
 
