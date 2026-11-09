@@ -1,8 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
+const { authenticateToken, requireRoles } = require('../middlewares/auth.middleware');
 
-// GET /api/appointments - Listar citas con filtros por veterinario y rango de fecha
+// Todas las operaciones de citas requieren autenticación previa
+router.use(authenticateToken);
+
+// GET /api/appointments - Listar citas (Accesible por ADMIN, VETERINARIAN y RECEPTIONIST)
 router.get('/', async (req, res, next) => {
   try {
     const { vet_id, status, date } = req.query;

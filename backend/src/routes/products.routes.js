@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
+const { authenticateToken, requireRoles } = require('../middlewares/auth.middleware');
 
-// GET /api/products - Lista de productos e inventario
-router.get('/', async (req, res, next) => {
+// GET /api/products - Lista de productos (Cualquier usuario autenticado para POS o recetas)
+router.get('/', authenticateToken, async (req, res, next) => {
   try {
     const { search, category } = req.query;
     let query = `SELECT * FROM products WHERE is_active = TRUE`;
@@ -43,8 +44,8 @@ router.get('/barcode/:barcode', async (req, res, next) => {
   }
 });
 
-// POST /api/products - Alta de producto o servicio
-router.post('/', async (req, res, next) => {
+// POST /api/products - Alta de producto o servicio (RESTRINGIDO EXCLUSIVAMENTE A ADMIN)
+router.post('/', authenticateToken, requireRoles('ADMIN'), async (req, res, next) => {
   try {
     const { barcode, sku, name, category, cost_price, sale_price, stock_current, stock_minimum, is_service } = req.body;
     const query = `

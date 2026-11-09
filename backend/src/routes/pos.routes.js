@@ -1,12 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
+const { authenticateToken, requireRoles } = require('../middlewares/auth.middleware');
+
+// Rutas de POS requieren autenticación
+router.use(authenticateToken);
 
 // POST /api/pos/checkout - Procesar venta, generar ticket y descontar inventario atómicamente
-router.post('/checkout', async (req, res, next) => {
+router.post('/checkout', requireRoles('ADMIN', 'RECEPTIONIST'), async (req, res, next) => {
   const client = await db.getClient();
   try {
-    const { client_id, user_id, items, payment_method = 'CASH', discount_amount = 0, notes } = req.body;
+    const { client_id, items, payment_method = 'CASH', discount_amount = 0, notes } = req.body;
+    const user_id = req.user.id; // Asignado automáticamente desde el token autenticado
 
     if (!items || items.length === 0) {
       return res.status(400).json({ success: false, message: 'El carrito no contiene items' });

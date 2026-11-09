@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db');
+const { authenticateToken, requireRoles } = require('../middlewares/auth.middleware');
+
+// Todas las consultas de pacientes requieren token activo
+router.use(authenticateToken);
 
 // GET /api/patients - Buscar pacientes con tutor
 router.get('/', async (req, res, next) => {
@@ -43,8 +47,8 @@ router.get('/:id/medical-records', async (req, res, next) => {
   }
 });
 
-// POST /api/patients/:id/medical-records - Crear historia clínica y registrar dosificación en Kardex
-router.post('/:id/medical-records', async (req, res, next) => {
+// POST /api/patients/:id/medical-records - Crear historia clínica (SOLO VETERINARIOS Y ADMIN)
+router.post('/:id/medical-records', requireRoles('VETERINARIAN', 'ADMIN'), async (req, res, next) => {
   const client = await db.getClient();
   try {
     const { id: patient_id } = req.params;
