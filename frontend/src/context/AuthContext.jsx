@@ -10,11 +10,28 @@ export const AuthProvider = ({ children }) => {
       full_name: 'Dra. Miriam Castro',
       email: 'miriam.castro@altuspetcloud.com',
       role: 'ADMIN',
-      professional_license: 'VET-894120'
+      professional_license: 'VET-894120',
+      tenant_name: 'Hospital Veterinario Altus',
+      tenant_id: 'ten-altus-01'
+    };
+  });
+
+  const [currentBranch, setCurrentBranch] = useState(() => {
+    const saved = localStorage.getItem('altus_petcloud_branch');
+    return saved ? JSON.parse(saved) : {
+      id: 'br-01',
+      name: 'Sucursal Matriz (Insurgentes)',
+      code: 'SUC-01',
+      phone: '(55) 8421-9900'
     };
   });
 
   const [token, setToken] = useState(() => localStorage.getItem('altus_petcloud_token') || 'mock-dev-token');
+
+  const switchBranch = (branch) => {
+    setCurrentBranch(branch);
+    localStorage.setItem('altus_petcloud_branch', JSON.stringify(branch));
+  };
 
   const login = (userData, jwtToken) => {
     setUser(userData);
@@ -36,7 +53,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout, hasRole, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, token, currentBranch, switchBranch, login, logout, hasRole, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );

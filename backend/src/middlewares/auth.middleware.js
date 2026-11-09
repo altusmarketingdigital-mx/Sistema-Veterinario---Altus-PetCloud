@@ -18,7 +18,9 @@ const authenticateToken = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded; // { id, email, role, full_name }
+    req.user = decoded; // { id, email, role, full_name, tenant_id, branch_id }
+    req.tenantId = decoded.tenant_id || req.headers['x-tenant-id'] || null;
+    req.branchId = decoded.branch_id || req.headers['x-branch-id'] || null;
     next();
   } catch (error) {
     return res.status(403).json({

@@ -7,6 +7,7 @@ const productsRoutes = require('./routes/products.routes');
 const posRoutes = require('./routes/pos.routes');
 const patientsRoutes = require('./routes/patients.routes');
 const authRoutes = require('./routes/auth.routes');
+const branchesRoutes = require('./routes/branches.routes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -15,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({
   origin: process.env.CORS_ORIGIN || '*',
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-tenant-id', 'x-branch-id']
 }));
 app.use(express.json());
 
@@ -31,6 +32,7 @@ app.get('/api/health', (req, res) => {
 
 // Rutas de Módulos Principales
 app.use('/api/auth', authRoutes);
+app.use('/api/branches', branchesRoutes);
 app.use('/api/appointments', appointmentsRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/api/pos', posRoutes);

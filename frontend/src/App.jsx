@@ -8,7 +8,13 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 function MainAppContent() {
   const [currentView, setCurrentView] = useState('dashboard');
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const { user, hasRole, logout } = useAuth();
+  const { user, hasRole, currentBranch, switchBranch } = useAuth();
+
+  const branches = [
+    { id: 'br-01', name: 'Sucursal Matriz (Insurgentes)', code: 'SUC-01', phone: '(55) 8421-9900' },
+    { id: 'br-02', name: 'Sucursal Coyoacán Spa', code: 'SUC-02', phone: '(55) 5533-1122' },
+    { id: 'br-03', name: 'Hospital 24/7 Del Valle', code: 'SUC-03', phone: '(55) 4411-8899' },
+  ];
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col md:flex-row">
@@ -18,7 +24,7 @@ function MainAppContent() {
       <aside className="w-full md:w-64 bg-[#0F172A] text-white p-5 flex flex-col justify-between print:hidden">
         <div>
           {/* Logotipo y Branding Corporativo Altus PetCloud */}
-          <div className="flex items-center gap-3 mb-8">
+          <div className="flex items-center gap-3 mb-6">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#10B981] to-[#0EA5E9] flex items-center justify-center font-bold text-white shadow-md text-lg">
               🐾
             </div>
@@ -26,6 +32,31 @@ function MainAppContent() {
               <h1 className="font-extrabold text-base tracking-tight text-white leading-tight">Altus PetCloud</h1>
               <p className="text-[10px] text-slate-400 font-medium">By Altus MKT Digital</p>
             </div>
+          </div>
+
+          {/* Selector Rápido de Sucursal Multi-Tenant */}
+          <div className="mb-6 p-2.5 bg-slate-800/80 rounded-xl border border-slate-700/60">
+            <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+              Sucursal Activa:
+            </label>
+            <select
+              value={currentBranch?.id}
+              onChange={(e) => {
+                const selected = branches.find((b) => b.id === e.target.value);
+                if (selected) switchBranch(selected);
+              }}
+              className="w-full bg-[#0F172A] text-white text-xs font-semibold px-2.5 py-1.5 rounded-lg border border-slate-600 focus:outline-none focus:ring-1 focus:ring-[#10B981]"
+            >
+              {branches.map((b) => (
+                <option key={b.id} value={b.id}>
+                  {b.name}
+                </option>
+              ))}
+            </select>
+            <p className="text-[10px] text-emerald-400 font-medium mt-1.5 flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+              {currentBranch?.code} &bull; En Línea
+            </p>
           </div>
 
           {/* Menú de Módulos con RBAC Condicional */}
