@@ -6,6 +6,7 @@ import ClinicalKardexView from './components/clinical/ClinicalKardexView';
 import AnalyticsView from './components/analytics/AnalyticsView';
 import WhatsAppModal from './components/crm/WhatsAppModal';
 import LoginModal from './components/auth/LoginModal';
+import LoginPage from './components/auth/LoginPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
 function MainAppContent() {
@@ -13,6 +14,11 @@ function MainAppContent() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isWhatsAppOpen, setIsWhatsAppOpen] = useState(false);
   const { user, hasRole, currentBranch, switchBranch, logout } = useAuth();
+
+  // Si no hay usuario autenticado (después de Cerrar Sesión), mostrar la Pantalla de Login completa
+  if (!user) {
+    return <LoginPage />;
+  }
 
   const branches = [
     { id: 'br-01', name: 'Sucursal Matriz (Insurgentes)', code: 'SUC-01', phone: '(55) 8421-9900' },
