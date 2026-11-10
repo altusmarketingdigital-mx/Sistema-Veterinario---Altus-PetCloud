@@ -25,13 +25,37 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Health Check
+// Health Check & Root informativo
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
     platform: 'Altus PetCloud API',
     brand: 'Altus MKT Digital',
     timestamp: new Date().toISOString()
+  });
+});
+
+app.get('/', (req, res) => {
+  res.json({
+    status: 'online',
+    platform: 'Altus PetCloud API Server',
+    version: '1.0.0',
+    brand: 'Altus MKT Digital',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      branches: '/api/branches',
+      appointments: '/api/appointments',
+      products: '/api/products',
+      pos: '/api/pos',
+      patients: '/api/patients',
+      prescriptions: '/api/prescriptions',
+      kardex: '/api/kardex',
+      shifts: '/api/shifts',
+      notifications: '/api/notifications',
+      analytics: '/api/analytics'
+    },
+    client_frontend_url: 'http://localhost:5173'
   });
 });
 
