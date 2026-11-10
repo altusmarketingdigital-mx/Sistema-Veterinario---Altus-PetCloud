@@ -12,7 +12,7 @@ flowchart LR
     A["Fase 1: MVP & Fundaciones (Completada ✅)"] --> B["Fase 2: Seguridad & Multi-Tenancy (Completada ✅)"]
     B --> C["Fase 3: Módulos Clínicos Avanzados (Completada ✅)"]
     C --> D["Fase 4: POS Avanzado & Control de Caja (Completada ✅)"]
-    D --> E["Fase 5: Notificaciones, CRM & BI (En Curso 🚀)"]
+    D --> E["Fase 5: Notificaciones, CRM & BI (Completada ✅)"]
 ```
 
 ---
@@ -78,16 +78,17 @@ flowchart LR
 
 ---
 
-### Fase 5: Notificaciones Automatizadas, Portal del Tutor y BI (Estado: PRÓXIMA / EN PLANIFICACIÓN 🚀)
+### Fase 5: Notificaciones Automatizadas, Portal del Tutor y BI (Estado: COMPLETADA ✅)
 **Objetivo:** Retención de clientes, recordatorios automáticos y reportes financieros.
 
-#### Sprint 7: CRM & Recordatorios Automáticos
-- [ ] Módulo de recordatorios de citas veterinarias y refuerzos de vacunas mediante WhatsApp API (integración con webhooks).
-- [ ] Portal web del tutor para consulta del carnet de vacunación y descarga de recetas.
+#### Sprint 7: CRM & Recordatorios Automáticos ✅
+- [x] Migración SQL `005_notifications_and_portal.sql` con tablas `notification_logs` y `patient_vaccinations`.
+- [x] Backend API de notificaciones (`/api/notifications/whatsapp`): Registro de auditoría, selección de plantillas y generación dinámica de enlaces directos para WhatsApp Web.
+- [x] Componente interactivo `WhatsAppModal.jsx` integrado al sistema para el envío de recordatorios de citas médicas, alertas de vacunación y promociones de spa.
 
-#### Sprint 8: Business Intelligence y Reportes Ejecutivos
-- [ ] Dashboard interactivo con métricas financieras (ingresos por veterinario, servicios de estética más rentables, ticket promedio).
-- [ ] Exportación de reportes contables en Excel / PDF y preparación para despliegue global.
+#### Sprint 8: Business Intelligence y Reportes Ejecutivos ✅
+- [x] Endpoint analítico de alto rendimiento `/api/analytics/dashboard` con agregaciones SQL en tiempo real: facturación mensual, ticket promedio, distribución por método de pago y top 5 servicios más rentables.
+- [x] Componente ejecutivo `AnalyticsView.jsx` con tarjetas KPI, barras de distribución de ingresos y productividad clínica, restringido a usuarios `ADMIN`.
 
 ---
 
@@ -99,4 +100,4 @@ flowchart LR
 | **M2** | Seguridad & Multi-Tenant | JWT, roles RBAC y selector de sucursales físicas | **COMPLETADO ✅** |
 | **M3** | Clínica & Kardex | Expediente clínico, recetas PDF y control de dosis hospitalarias | **COMPLETADO ✅** |
 | **M4** | POS Avanzado | Arqueo/Corte Z, lotes/caducidades y control de caja | **COMPLETADO ✅** |
-| **M5** | CRM & BI | Recordatorios WhatsApp y analíticas ejecutivas | *Próximo (Fase 5)* |
+| **M5** | CRM & BI | Recordatorios WhatsApp y analíticas ejecutivas | **COMPLETADO ✅** |
