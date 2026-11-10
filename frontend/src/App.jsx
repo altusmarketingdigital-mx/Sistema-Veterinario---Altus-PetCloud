@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import DashboardView from './components/dashboard/DashboardView';
 import AppointmentsView from './components/appointments/AppointmentsView';
+import PatientsView from './components/patients/PatientsView';
+import UsersView from './components/users/UsersView';
 import PosView from './components/pos/PosView';
 import ClinicalKardexView from './components/clinical/ClinicalKardexView';
 import AnalyticsView from './components/analytics/AnalyticsView';
@@ -95,7 +97,19 @@ function MainAppContent() {
                   : 'text-slate-300 hover:text-white hover:bg-white/[0.05]'
               }`}
             >
-              <span className="text-base">📅</span> Citas & Consultorio
+              <span className="text-base">📅</span> Citas & Consultas
+            </button>
+
+            {/* Módulo de Pacientes & Tutores */}
+            <button
+              onClick={() => setCurrentView('patients')}
+              className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl text-xs font-bold transition-all duration-200 ${
+                currentView === 'patients'
+                  ? 'bg-gradient-to-r from-emerald-500/20 to-sky-500/10 text-white border border-emerald-500/40 shadow-lg shadow-emerald-500/10'
+                  : 'text-slate-300 hover:text-white hover:bg-white/[0.05]'
+              }`}
+            >
+              <span className="text-base">🐾</span> Padrón de Pacientes
             </button>
 
             {/* Accesible por Admin y Veterinario */}
@@ -123,6 +137,20 @@ function MainAppContent() {
                 }`}
               >
                 <span className="text-base">💳</span> Punto de Venta (POS)
+              </button>
+            )}
+
+            {/* Módulo de Usuarios & Personal Exclusivo para Admin */}
+            {hasRole('ADMIN') && (
+              <button
+                onClick={() => setCurrentView('users')}
+                className={`w-full flex items-center gap-3.5 px-4 py-3 rounded-2xl text-xs font-bold transition-all duration-200 ${
+                  currentView === 'users'
+                    ? 'bg-gradient-to-r from-emerald-500/20 to-sky-500/10 text-white border border-emerald-500/40 shadow-lg shadow-emerald-500/10'
+                    : 'text-slate-300 hover:text-white hover:bg-white/[0.05]'
+                }`}
+              >
+                <span className="text-base">👥</span> Personal & Usuarios
               </button>
             )}
 
@@ -203,6 +231,8 @@ function MainAppContent() {
         <div className="relative z-10">
           {currentView === 'dashboard' && <DashboardView onNavigate={(view) => setCurrentView(view)} />}
           {currentView === 'appointments' && <AppointmentsView />}
+          {currentView === 'patients' && <PatientsView />}
+          {currentView === 'users' && hasRole('ADMIN') && <UsersView />}
           {currentView === 'clinical' && hasRole('ADMIN', 'VETERINARIAN') && <ClinicalKardexView />}
           {currentView === 'pos' && hasRole('ADMIN', 'RECEPTIONIST') && <PosView />}
           {currentView === 'analytics' && hasRole('ADMIN') && <AnalyticsView />}
